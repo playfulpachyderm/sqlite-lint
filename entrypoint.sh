@@ -16,10 +16,8 @@ echo $SCHEMA_PATH
 # Create the database
 sqlite3 $DB_PATH < $SCHEMA_PATH
 
-output=$(sqlite3 -column -header $DB_PATH < /lints.sql)
-if [ -n "$output" ]; then
+sqlite3 -column -header $DB_PATH < /lints.sql | tee output.txt
+if [ -s output.txt ]; then
 	echo "Some checks failed."
-	echo
-	echo $output
 	exit 2
 fi
