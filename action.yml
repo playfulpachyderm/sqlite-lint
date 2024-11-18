@@ -1,0 +1,12 @@
+# action.yml
+name: SQLite schema lint
+description: Enforce constraints on SQLite schemas
+inputs:
+  schema-file:
+    description: SQL schema file that will create
+    required: true
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.schema-file }}
