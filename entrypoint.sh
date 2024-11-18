@@ -9,14 +9,14 @@ if [ -z "$1" ]; then
 fi
 
 DB_PATH=/tmp/database.db
-SCHEMA_PATH="$GITHUB_WORKSPACE/$1"
-echo $GITHUB_WORKSPACE
+SCHEMA_PATH="$1"
+pwd
 echo $SCHEMA_PATH
 
 # Create the database
 sqlite3 $DB_PATH < $SCHEMA_PATH
 
-output=$(sqlite3 -column -header $DB_PATH < lints.sql)
+output=$(sqlite3 -column -header $DB_PATH < /lints.sql)
 if [ -n "$output" ]; then
 	echo "Some checks failed."
 	echo
