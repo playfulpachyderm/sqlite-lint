@@ -3,7 +3,7 @@ name: SQLite schema lint
 description: Enforce constraints on SQLite schemas
 inputs:
   schema-file:
-    description: SQL schema file that will create
+    description: SQL schema file to lint
     required: true
 runs:
   using: 'docker'

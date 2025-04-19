@@ -1,0 +1,87 @@
+version: "2"
+
+linters:
+  default: none
+  enable:
+    # Defaults
+    - errcheck
+    - govet
+    - ineffassign
+    - staticcheck
+    - unused
+
+    # Extras
+    - depguard
+    - errorlint
+    - godox
+    - lll
+    - nolintlint
+    - sqlclosecheck
+    - whitespace
+    - wrapcheck
+
+  settings:
+    depguard:
+      rules:
+        main:
+          deny:
+            - pkg: io/ioutil
+              desc: replace with the matching functions from `io` or `os` packages
+            - pkg: github.com/pkg/errors
+              desc: Should be replaced by standard lib errors package
+    errcheck:
+      # report about not checking of errors in type assertions: `a := b.(MyStruct)`;
+      # default is false: such cases aren't reported by default.
+      check-type-assertions: true
+    errorlint:
+      errorf: true      # Ensure Errorf only uses %w (not %v or %s etc) for errors
+      asserts: true     # Require errors.As instead of type-asserting
+      comparison: true  # Require errors.Is instead of equality-checking
+    godox:
+      # report any comments starting with keywords, this is useful for TODO or FIXME comments that
+      # might be left in the code accidentally and should be resolved before merging
+      keywords: # default keywords are TODO, BUG, and FIXME, these can be overwritten by this setting
+        - XXX
+    govet:
+      enable-all: true
+      disable:
+        - fieldalignment
+    lll:
+      line-length: 140
+      tab-width: 4
+    nolintlint:
+      require-explanation: true
+      require-specific: true
+      allow-unused: false
+    staticcheck:
+      go: "1.24"
+      checks:
+        - all
+        - -ST1000 # Re-enable this once we have docstrings
+        - -ST1001 # Dot imports are good sometimes (e.g., in test packages)
+        - -ST1003 # snake_case is better for non-exported symbols
+        - -ST1013 # HTTP status codes are shorter and more readable than names
+  exclusions:
+    generated: lax # Don't lint generated files
+    paths:
+
+formatters:
+  enable:
+    - gci
+    - gofmt
+  settings:
+    gci:
+      sections:
+        - standard
+        - default
+        - localmodule
+    gofmt:
+      simplify: true
+  exclusions:
+    generated: lax
+    paths:
+
+issues:
+  max-same-issues: 0
+  max-issues-per-linter: 0
+  uniq-by-line: false

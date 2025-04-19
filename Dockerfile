@@ -1,9 +1,17 @@
+from golang:alpine as builder
+
+run apk add sqlite-dev build-base
+
+copy . /code
+workdir /code
+
+env CGO_ENABLED=1
+run go build -ldflags="-w -s -linkmode=external -extldflags=-static" -o sqlite_lint ./cmd/main.go
+
+# ---
+
 from alpine:3.20
 
-run apk add sqlite
+COPY --from=builder /code/sqlite_lint /
 
-copy entrypoint.sh /
-copy lints.sql /
-run chmod +x /entrypoint.sh
-
-entrypoint ["/entrypoint.sh"]
+entrypoint ["/sqlite_lint"]

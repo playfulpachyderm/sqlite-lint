@@ -1,0 +1,61 @@
+name: Build
+
+on:
+  push:
+    branches: ["*"]   # Any branch
+    tags: ["v*.*.*"]  # Release tags
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: "1.24"
+
+      - name: Install dependencies
+        run: |
+          go mod download
+          curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v2.0.1
+
+      - name: Lint
+        run: golangci-lint run
+
+      - name: Run tests
+        run: |
+          go test ./...
+
+  test-action:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v2
+
+      - name: Run SQLite schema lint action
+        uses: ./
+        with:
+          schema-file: 'test_schemas/success.sql'
+
+      - name: Run SQLite schema lint action with invalid schema
+        uses: ./
+        with:
+          schema-file: 'test_schemas/failure-no-strict.sql'
+        continue-on-error: true
+
+      - name: Check for expected failure
+        run: |
+          if [ $? -eq 0 ]; then
+            echo "The action succeeded unexpectedly."
+            exit 1
+          else
+            echo "The action failed as expected."
+          fi
