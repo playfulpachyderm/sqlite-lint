@@ -54,7 +54,7 @@ func main() {
 	}
 	if is_failure {
 		fmt.Println(RED + "Errors found" + RESET)
-	} else {
-		fmt.Println(GREEN + "Success" + RESET)
+		os.Exit(1)
 	}
+	fmt.Println(GREEN + "Success" + RESET)
 }
