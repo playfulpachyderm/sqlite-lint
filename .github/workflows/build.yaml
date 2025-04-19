@@ -45,17 +45,17 @@ jobs:
         with:
           schema-file: 'test_schemas/success.sql'
 
+      # This step is expected to fail
       - name: Run SQLite schema lint action with invalid schema
+        id: invalid_schema_test
         uses: ./
         with:
           schema-file: 'test_schemas/failure-no-strict.sql'
         continue-on-error: true
 
+      # This step should check that the previous step failed.  If it was successful, this step should fail
       - name: Check for expected failure
+        if: steps.invalid_schema_test.outcome != 'failure'
         run: |
-          if [ $? -eq 0 ]; then
-            echo "The action succeeded unexpectedly."
-            exit 1
-          else
-            echo "The action failed as expected."
-          fi
+          echo "Expected the invalid schema test to fail, but it succeeded"
+          exit 1
