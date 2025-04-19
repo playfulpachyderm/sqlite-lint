@@ -57,5 +57,6 @@ jobs:
       - name: Check for expected failure
         if: steps.invalid_schema_test.outcome != 'failure'
         run: |
+          echo "Previous step result: ${{ steps.invalid_schema_test.outcome }}"
           echo "Expected the invalid schema test to fail, but it succeeded"
           exit 1
