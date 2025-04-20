@@ -60,3 +60,11 @@ jobs:
           echo "Previous step result: ${{ steps.invalid_schema_test.outcome }}"
           echo "Expected the invalid schema test to fail, but it succeeded"
           exit 1
+
+      # This step should succeed, because the check that would fail is disabled
+      - name: Run SQLite schema lint action with invalid schema
+        id: invalid_schema_test
+        uses: ./
+        with:
+          schema-file: 'test_schemas/failure-no-strict.sql'
+          require_strict: false

@@ -1,10 +1,34 @@
 # action.yml
 name: SQLite schema lint
 description: Enforce constraints on SQLite schemas
+
 inputs:
   schema-file:
     description: SQL schema file to lint
     required: true
+
+  # List of checks
+  require_not_null:
+    description: Enforce that all columns should be marked as `not null` unless they are foreign keys.
+    required: false
+    default: true
+  require_strict:
+    description: Enforce that all tables should be marked as `strict`.
+    required: false
+    default: true
+  forbid_int_type:
+    description: Enforce that all columns should use `integer` type instead of `int`.
+    required: false
+    default: true
+  require_explicit_primary_key:
+    description: Enforce that all tables must have a primary key.
+    required: false
+    default: true
+  require_indexes_for_foreign_keys:
+    description: Enforce that columns referenced by foreign keys must have indexes.
+    required: false
+    default: true
+
 runs:
   using: 'docker'
   image: 'Dockerfile'
