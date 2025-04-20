@@ -6,7 +6,7 @@ copy . /code
 workdir /code
 
 env CGO_ENABLED=1
-run go build -ldflags="-w -s -linkmode=external -extldflags=-static" -o sqlite_lint ./cmd/main.go
+run go build -ldflags="-w -s -linkmode=external -extldflags=-static" -o sqlite_lint ./cmd/sqlite_lint/main.go
 
 # ---
 
