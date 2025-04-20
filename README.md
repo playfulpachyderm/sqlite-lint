@@ -2,6 +2,8 @@
 
 This GitHub Action lints SQLite schema files to enforce various constraints. It is designed to ensure that your SQLite schemas adhere to best practices.
 
+You can also install it to validate schemas locally.
+
 ## Inputs
 
 - **`schema-file`**: (Required) The SQL schema file to lint.
@@ -25,6 +27,16 @@ jobs:
           schema-file: pkg/db/schema.sql
 ```
 
+## Installing
+
+CGo is required.  You will need a C compiler (and if it isn't `gcc` you might have to specify what it is as `CC=whatever` before installing).
+
+```bash
+CGO_ENABLED=1 go install github.com/playfulpachyderm/sqlite-lint/cmd/sqlite_lint@v1.0.2
+
+sqlite_lint <path/to/schema.sql>
+```
+
 ## Available Checks
 
 All checks are enabled by default.  To turn one off, you can use:
@@ -36,6 +48,12 @@ All checks are enabled by default.  To turn one off, you can use:
 ```
 
 This will disable the `require_not_null` check.
+
+When running locally, you can use:
+
+```bash
+INPUT_REQUIRE_NOT_NULL=false sqlite_lint <path/to/schema.sql>  # `require_not_null` check will be skipped
+```
 
 ### `require_not_null`
 
