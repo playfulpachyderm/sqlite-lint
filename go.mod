@@ -1,4 +1,4 @@
-module sqlite_lint
+module github.com/playfulpachyderm/sqlite-lint
 
 go 1.24.0
 

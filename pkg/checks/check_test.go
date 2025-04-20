@@ -6,7 +6,7 @@ import (
 
 	_ "github.com/mattn/go-sqlite3"
 
-	"sqlite_lint/pkg/checks"
+	"github.com/playfulpachyderm/sqlite-lint/pkg/checks"
 )
 
 func TestFailureCases(t *testing.T) {
