@@ -62,8 +62,7 @@ jobs:
           exit 1
 
       # This step should succeed, because the check that would fail is disabled
-      - name: Run SQLite schema lint action with invalid schema
-        id: invalid_schema_test
+      - name: Lint an invalid schema, but with the check disabled
         uses: ./
         with:
           schema-file: 'test_schemas/failure-no-strict.sql'
