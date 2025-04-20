@@ -1,3 +1,8 @@
+/*
+ * NOTE: This file is kept for historical reference.  These checks have all been moved into the Go
+ * implementation, except the 'require_default_values' check.  That one is TODO.
+ */
+
 create temporary view tables as
     select l.*
       from sqlite_schema s
